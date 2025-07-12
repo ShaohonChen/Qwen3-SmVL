@@ -1,0 +1,8 @@
+torch
+torchvision
+transformers
+accelerate
+modelscope
+datasets
+num2words
+swanlab
