@@ -85,8 +85,8 @@ def freeze_model(qwen_smvl):
         param.requires_grad = False
     for _, param in qwen_smvl.model.vision_model.named_parameters():
         param.requires_grad = False
-    for _, param in qwen_smvl.lm_head.named_parameters():
-        param.requires_grad = False
+    # for _, param in qwen_smvl.lm_head.named_parameters():
+    #     param.requires_grad = False
     return qwen_smvl
 
 
