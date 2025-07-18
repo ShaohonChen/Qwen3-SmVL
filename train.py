@@ -69,6 +69,11 @@ def load_mm_data(select_data):
         except:
             print(f"bad dataset:{data_name}")
     raw_data = datasets.concatenate_datasets(data_list)
+    raw_data = raw_data.train_test_split(
+        64, shuffle=True, seed=training_args.data_seed
+    )  # 预留64条用于训练中测试，仅仅使用64条是因为减少测试时间长度
+    if select_data == "all":
+        raw_data["train"] = raw_data["train"].select(range(60 * 1024))  # 选取120M token
     return raw_data
 
 
@@ -190,9 +195,6 @@ def main(training_args):
     # 准备训练数据集
     ################
     raw_data = load_mm_data(select_data=training_args.train_data)
-    raw_data = raw_data.train_test_split(
-        64, shuffle=True, seed=training_args.data_seed
-    )  # 预留64条用于训练中测试，仅仅使用64条是因为减少测试时间长度
     print(f"总数据条数：{raw_data}")
 
     # data formatting
