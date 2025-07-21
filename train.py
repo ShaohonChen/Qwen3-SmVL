@@ -17,8 +17,6 @@ import swanlab
 from utils import load_model, load_processor
 
 device = "cuda:0"
-# os.environ["SWANLAB_MODE"] = "disabled" # for debug
-
 
 ################
 # 加载数据集
