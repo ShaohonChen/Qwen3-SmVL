@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import torch
 from transformers import (
@@ -51,8 +51,8 @@ def load_model(device="cuda:0"):
     @dataclass
     class ConnectConfig:
         scale_factor: int = 4
-        vision_config: VisionConfig = VisionConfig()
-        text_config: TextConfig = TextConfig()
+        vision_config: VisionConfig = field(default_factory=VisionConfig)
+        text_config: TextConfig = field(default_factory=TextConfig)
 
     new_connector_config = ConnectConfig()
 
