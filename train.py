@@ -16,7 +16,7 @@ import swanlab
 
 from utils import load_model, load_processor
 
-device = "cuda:0"
+device = "cuda"
 
 ################
 # 加载数据集
@@ -157,6 +157,7 @@ class MyTrainArgs(TrainingArguments):
     seed: int = 42
     data_seed: int = 42
     per_device_train_batch_size: int = 1
+    per_device_eval_batch_size: int = 1  # 设定为1防止默认的8eval导致显存占用过大
     gradient_accumulation_steps: int = 4
     dataloader_pin_memory: bool = False
     warmup_ratio: float = 0.1
