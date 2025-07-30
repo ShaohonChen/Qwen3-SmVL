@@ -8,6 +8,10 @@
 * SwanLab：[https://swanlab.cn/@ShaohonChen/Qwen3-SmVL/overview](https://swanlab.cn/@ShaohonChen/Qwen3-SmVL/overview)
 * 数据集：[https://huggingface.co/datasets/HuggingFaceM4/the_cauldron](https://huggingface.co/datasets/HuggingFaceM4/the_cauldron)
 
+<div style="background-color:#d4edda; color:black; padding:10px; border-radius:4px; border:1px solid #7bd886ff; width: 90%; max-width: 100%; margin: auto;">
+  😊特别感谢 <a href="https://github.com/zhihuazhao-bit" target="_blank" style="color:#00562b; font-weight:bold; text-decoration:underline;">@zhihuazhao-bit</a> 帮我审阅和修复了代码中众多的小bug，并在NV上完成了测试。
+</div>
+
 ## 摘要
 
 最近Huggingface团队发布了超小多模态模型SmolVLM2，可以做到端侧1GB显存推理。在怀着惊喜试用后发现，虽然模型有极其强大的视觉文本理解能力，但是模型却无法理解中文。这对一个“四六级压线过”的笔者来说十分不友好。刚好前段时间做SwanLab硬件检测适配时有一台未到期的沐曦曦云C500服务器，因此萌生了使用**沐曦GPU芯片**微调、把当前中文小模型扛把子Qwen3与SmolVLM2直接微调拼接的想法。
@@ -608,7 +612,7 @@ bash download_resource.sh
 # 单GPU训练
 CUDA_VISIBLE_DEVICES=0 python train.py ./cocoqa_train.yaml
 # 8GPU训练
-accelerate --num_process 8 train.py ./cocoqa_train.yaml
+accelerate launch --num_process 8 train.py ./cocoqa_train.yaml
 ```
 
 注意，本项目使用SwanLab进行训练日志记录与分析，如果未登陆SwanLab需要使用`swanlab login`进行登陆。运行后看到如下结果即代表实验成功开启：
@@ -657,7 +661,7 @@ PS: 作者公开了在[SwanLab上的训练结果](https://swanlab.cn/@ShaohonChe
 # 单GPU训练
 CUDA_VISIBLE_DEVICES=0 python train.py ./full_train.yaml
 # 8GPU训练
-accelerate --num_process 8 train.py ./full_train.yaml
+accelerate launch --num_processes 8 train.py ./full_train.yaml
 ```
 
 下图展示了使用完整微调数据对比于小批量训练，可以看到全量数据微调时loss变得更为抖动，这是由于数据类型的丰富给模型的学习带来了一定的挑战。

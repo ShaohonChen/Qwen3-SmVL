@@ -51,15 +51,16 @@ def load_mm_data(select_data):
         "docvqa",
         "dvqa",
     ]
+    # fix select_data
     if select_data == "all":
-        select_data = all_data_names
+        tmp_data = all_data_names
     elif select_data in all_data_names:
-        select_data = [select_data]
+        tmp_data = [select_data]
     else:
-        raise f"cannot find {select_data}"
+        raise f"cannot find {tmp_data}"
 
     data_list = []
-    for data_name in select_data:
+    for data_name in tmp_data:
         try:
             data_list.append(
                 datasets.load_dataset("data/the_cauldron", data_name)["train"]
@@ -71,7 +72,7 @@ def load_mm_data(select_data):
         64, shuffle=True, seed=training_args.data_seed
     )  # 预留64条用于训练中测试，仅仅使用64条是因为减少测试时间长度
     if select_data == "all":
-        raw_data["train"] = raw_data["train"].select(range(60 * 1024))  # 选取120M token
+        raw_data["train"] = raw_data["train"].select(range(60 * 1024))  # 选取60K token
     return raw_data
 
 
@@ -151,31 +152,32 @@ def data_collate_fix2k(examples, processor, device, max_length=2048):
 ################
 @dataclass
 class MyTrainArgs(TrainingArguments):
-    train_data = "cocoqa"
-    seed = 42
-    data_seed = 42
-    max_steps = 200
-    per_device_train_batch_size = 1
-    gradient_accumulation_steps = 4
-    dataloader_pin_memory = False
-    warmup_ratio = 0.1
-    learning_rate = 1e-4
-    lr_scheduler_type = "cosine"
-    weight_decay = 0.01
-    logging_steps = 5
-    eval_strategy = "steps"
-    eval_steps = 0.125
-    save_strategy = "steps"
-    save_steps = 0.125
-    save_total_limit = 8
-    optim = "adamw_torch"
-    bf16 = True
-    output_dir = f"./model/qwen-smovlm"
-    overwrite_output_dir = True
-    report_to = "swanlab"
-    run_name = "freeze_except_connector_fulldata"
-    remove_unused_columns = False
-    gradient_checkpointing = False
+    # 更新TrainingArguments的参数形式，原本的形式会报错参数不存在
+    train_data: str = "cocoqa"
+    seed: int = 42
+    data_seed: int = 42
+    per_device_train_batch_size: int = 1
+    gradient_accumulation_steps: int = 4
+    dataloader_pin_memory: bool = False
+    warmup_ratio: float = 0.1
+    learning_rate: float = 1e-4
+    lr_scheduler_type: str = "cosine"
+    weight_decay: float = 0.01
+    logging_steps: int = 5
+    evaluation_strategy: str = "steps"         # 注意这里 eval_strategy 要改为 evaluation_strategy
+    eval_steps: int = 10
+    save_strategy: str = "steps"
+    save_steps: int = 10
+    save_total_limit: int = 8
+    optim: str = "adamw_torch"
+    bf16: bool = True
+    output_dir: str = "./model/qwen-smovlm"
+    overwrite_output_dir: bool = True
+    report_to: str = "swanlab"
+    run_name: str = "freeze_except_connector_fulldata"
+    remove_unused_columns: bool = False
+    gradient_checkpointing: bool = False
+    
 
 
 def main(training_args):
@@ -257,13 +259,14 @@ def main(training_args):
             )
             print("################# 输入文本 #################")
             print(texts)
-            images = [[Image.open("dog.png")]]
+            # update img path
+            images = [[Image.open("./resource/dog.png")]]
             batch = qwen_smvl_processor(
                 text=[texts],
                 images=images,
                 max_length=1024,
                 return_tensors="pt",
-                paddding_side="left",
+                padding_side="left",
                 padding=True,
             ).to(qwen_smvl.device, dtype=torch.bfloat16)
             generated_ids = qwen_smvl.generate(
@@ -293,11 +296,12 @@ def main(training_args):
 
 
 if __name__ == "__main__":
-    parser = HfArgumentParser(TrainingArguments)
+    parser = HfArgumentParser(MyTrainArgs)
     if len(sys.argv) == 2 and sys.argv[1].endswith(".yaml"):
         # If we pass only one argument to the script and it's the path to a yaml file,
         # let's parse it to get our arguments.
-        training_args = parser.parse_yaml_file(json_file=os.path.abspath(sys.argv[1]))
+        training_args = parser.parse_yaml_file(yaml_file=os.path.abspath(sys.argv[1]))
     else:
         training_args = parser.parse_args_into_dataclasses()
+    # (training_args,) = parser.parse_yaml_file(yaml_file='full_train.yaml')
     main(training_args)
