@@ -8,9 +8,8 @@
 * SwanLab：[https://swanlab.cn/@ShaohonChen/Qwen3-SmVL/overview](https://swanlab.cn/@ShaohonChen/Qwen3-SmVL/overview)
 * 数据集：[https://huggingface.co/datasets/HuggingFaceM4/the_cauldron](https://huggingface.co/datasets/HuggingFaceM4/the_cauldron)
 
-<div style="background-color:#d4edda; color:black; padding:10px; border-radius:4px; border:1px solid #7bd886ff; width: 90%; max-width: 100%; margin: auto;">
-  😊特别感谢 <a href="https://github.com/zhihuazhao-bit" target="_blank" style="color:#00562b; font-weight:bold; text-decoration:underline;">@zhihuazhao-bit</a> 帮我审阅和修复了代码中众多的小bug，并在NV上完成了测试。
-</div>
+> 💚 **特别感谢**  
+> 感谢 [@zhihuazhao-bit](https://github.com/zhihuazhao-bit) 帮我审阅和修复了代码中众多的小 bug，并在 NV 上完成了测试。
 
 ## 摘要
 
