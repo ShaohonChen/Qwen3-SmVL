@@ -6,3 +6,6 @@ modelscope download --model HuggingFaceTB/SmolVLM2-256M-Video-Instruct --local_d
 modelscope download --dataset AI-ModelScope/the_cauldron --local_dir ./data/the_cauldron
 
 modelscope download --dataset HuggingFaceM4/Docmatix --local_dir ./data/Docmatix
+
+# https://blog.csdn.net/Toky_min/article/details/147514735
+modelscope download --dataset TIGER-Lab/VideoFeedback --local_dir ./data/VideoFeedback

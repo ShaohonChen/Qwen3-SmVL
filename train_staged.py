@@ -144,11 +144,19 @@ def load_mm_data(select_data, data_seed=42):
     data_list = []
     for data_name in tmp_data:
         try:
-            data_list.append(
-                datasets.load_dataset("data/the_cauldron", data_name)["train"]
-            )
-        except Exception:
-            print(f"bad dataset:{data_name}")
+            # 构建数据集路径
+            dataset_path = f"data/the_cauldron/{data_name}"
+            # 检查目录是否存在
+            import os
+            if os.path.exists(dataset_path):
+                # 加载parquet文件
+                dataset = datasets.load_dataset("parquet", data_files=f"{dataset_path}/*.parquet")["train"]
+                data_list.append(dataset)
+                print(f"成功加载数据集: {data_name}")
+            else:
+                print(f"数据集目录不存在: {dataset_path}")
+        except Exception as e:
+            print(f"加载数据集失败: {data_name}, 错误: {e}")
     
     # 将所有数据集合并为一个数据集
     raw_data = datasets.concatenate_datasets(data_list)
