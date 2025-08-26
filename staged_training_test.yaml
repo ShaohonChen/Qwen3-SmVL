@@ -22,9 +22,9 @@ stage2_lr: 0.00005
 stage3_lr: 0.00001
 
 # 批量大小设置（小批量快速验证）
-per_device_train_batch_size: 2
-per_device_eval_batch_size: 2
-gradient_accumulation_steps: 4
+per_device_train_batch_size: 1
+per_device_eval_batch_size: 1
+gradient_accumulation_steps: 2
 
 # 数据加载参数
 dataloader_pin_memory: false
