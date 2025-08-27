@@ -661,6 +661,14 @@ PS: 作者公开了在[SwanLab上的训练结果](https://swanlab.cn/@ShaohonChe
 CUDA_VISIBLE_DEVICES=0 python train.py ./full_train.yaml
 # 8GPU训练
 accelerate launch --num_processes 8 train.py ./full_train.yaml
+
+# 分阶段训练
+CUDA_VISIBLE_DEVICES=0 python train_staged.py ./staged_training_test.yaml
+
+
+# 分阶段全量训练
+CUDA_VISIBLE_DEVICES=0 python train_staged.py ./staged_training.yaml
+
 ```
 
 下图展示了使用完整微调数据对比于小批量训练，可以看到全量数据微调时loss变得更为抖动，这是由于数据类型的丰富给模型的学习带来了一定的挑战。

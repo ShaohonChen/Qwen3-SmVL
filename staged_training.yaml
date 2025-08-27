@@ -1,0 +1,60 @@
+# 分阶段训练配置文件
+# 支持三个阶段的全量微调流程
+
+# 数据相关参数
+train_data: "all"
+seed: 42
+data_seed: 42
+
+# 分阶段训练参数
+training_stage: "all"  # stage1, stage2, stage3, all
+resume_from_stage: null  # 从指定阶段恢复训练
+
+# 各阶段的训练轮数
+stage1_epochs: 1
+stage2_epochs: 1
+stage3_epochs: 1
+
+# 各阶段的学习率（递减策略）
+stage1_lr: 0.0001  # 阶段1: 只训练连接器，使用较高学习率
+stage2_lr: 0.00005  # 阶段2: 训练视觉+连接器，中等学习率
+stage3_lr: 0.00001  # 阶段3: 全量微调，较低学习率
+
+# 批量大小设置
+per_device_train_batch_size: 1
+per_device_eval_batch_size: 1
+gradient_accumulation_steps: 4
+
+# 数据加载参数
+dataloader_pin_memory: false
+
+# 优化器设置
+warmup_ratio: 0.1
+lr_scheduler_type: "cosine"
+weight_decay: 0.01
+optim: "adamw_torch"
+
+# 日志和评估设置
+logging_steps: 5
+evaluation_strategy: "steps"
+eval_steps: 10
+
+# 模型保存设置
+save_strategy: "steps"
+save_steps: 10
+save_total_limit: 8
+
+# 精度和性能设置
+bf16: true
+gradient_checkpointing: false
+
+# 输出和实验跟踪
+output_dir: "./model/staged_training"
+overwrite_output_dir: true
+report_to: "swanlab"
+run_name: "staged_training"
+remove_unused_columns: false
+
+# 下游任务配置
+downstream_tasks: null  # 下游任务列表
+video_data: false  # 是否包含视频数据 
