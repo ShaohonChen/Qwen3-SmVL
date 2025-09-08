@@ -1,0 +1,61 @@
+# 快速开始配置文件
+# 适用于快速验证和测试
+
+# 数据相关参数
+train_data: "cocoqa"  # 使用单一数据集快速验证
+seed: 42
+data_seed: 42
+max_steps: 5000
+
+# 分阶段训练参数
+training_stage: "all"  # 只训练阶段1进行快速验证
+resume_from_stage: null
+
+# 各阶段的训练轮数（快速验证用较少轮数）
+stage1_epochs: 1
+stage2_epochs: 1
+stage3_epochs: 1
+
+# 各阶段的学习率
+stage1_lr: 0.0001
+stage2_lr: 0.00005
+stage3_lr: 0.00001
+
+# 批量大小设置（小批量快速验证）
+per_device_train_batch_size: 1
+per_device_eval_batch_size: 1
+gradient_accumulation_steps: 2
+
+# 数据加载参数
+dataloader_pin_memory: false
+
+# 优化器设置
+warmup_ratio: 0.1
+lr_scheduler_type: "cosine"
+weight_decay: 0.01
+optim: "adamw_torch"
+
+# 日志和评估设置（频繁记录便于监控）
+logging_steps: 2
+evaluation_strategy: "steps"
+eval_steps: 500
+
+# 模型保存设置（频繁保存便于调试）
+save_strategy: "steps"
+save_steps: 500
+save_total_limit: 3
+
+# 精度和性能设置
+bf16: true
+gradient_checkpointing: false
+
+# 输出和实验跟踪
+output_dir: "./model/staged_training_test"
+overwrite_output_dir: true
+report_to: "swanlab"
+run_name: "quick_start_test"
+remove_unused_columns: false
+
+# 下游任务配置（快速验证时不使用）
+downstream_tasks: null
+video_data: false 
