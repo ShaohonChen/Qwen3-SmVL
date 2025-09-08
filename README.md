@@ -9,7 +9,8 @@
 * 数据集：[https://huggingface.co/datasets/HuggingFaceM4/the_cauldron](https://huggingface.co/datasets/HuggingFaceM4/the_cauldron)
 
 > 💚 **特别感谢**  
-> 感谢 [@zhihuazhao-bit](https://github.com/zhihuazhao-bit) 帮我审阅和修复了代码中众多的小 bug，并在 NV 上完成了测试。
+> 感谢 [@zhihuazhao-bit](https://github.com/zhihuazhao-bit) 帮助审阅和修复了代码中众多的小 bug，并在 NV 上完成了测试！
+> 感谢 [@lovelyyoshino](https://github.com/lovelyyoshino)帮助填补了数据集中的部分错误，并且提升了模型效果！
 
 ## 摘要
 
